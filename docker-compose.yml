@@ -1,0 +1,46 @@
+version: "3.3"
+
+networks:
+  corp:
+    driver: bridge
+
+services:
+  nestjs-server:
+    container_name: nestjs-server
+    build:
+      context: ./
+      cache_from:
+        - reign-total
+      dockerfile: ./apps/api/Dockerfile
+      args:
+        NODE_ENV: "development"
+        BUILD_FLAG: ""
+    image: api:nx-dev
+    ports:
+      - 5000:5000
+    environment:
+      NODE_ENV: "development"
+      PORT: 5000
+    networks:
+      - corp
+    restart: on-failure
+
+  client-react:
+    container_name: client-react
+    build:
+      context: ./
+      cache_from:
+        - nginx:1.19.2
+      dockerfile: ./apps/reign-client/Dockerfile
+      args:
+        NODE_ENV: "development"
+        BUILD_FLAG: ""
+    image: reign-client:nx-dev
+    ports:
+      - 4900:80
+    environment:
+      NODE_ENV: "development"
+      PORT: 4900
+    networks:
+      - corp
+    restart: on-failure
