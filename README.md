@@ -1,6 +1,9 @@
 # HN NEWS!
 
 ```
+Install Dependencies:
+npm i
+
 To start the whole project use:
 docker-compose up
 
